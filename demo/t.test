@@ -1,1 +1,5 @@
-
+// url "www.baidu.com"
+code := 200
+get "www.baidu.com"
+println code
+// ret code
