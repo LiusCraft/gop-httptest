@@ -23,7 +23,7 @@ func Gopt_App_Main(app Apper) {
 	app.(interface{ MainEntry() }).MainEntry()
 }
 
-func (p * App) get(url string) {
+func (p * App) Get(url string) {
 	p.Test.Get(url)
 }
 
@@ -39,7 +39,7 @@ func (p * App) get(url string) {
 // 	p.Test.Post(p.Test.url)
 // }
 
-func (p *App) url(url string) {
+func (p *App) Url(url string) {
 	p.Test.url = url
 }
 
