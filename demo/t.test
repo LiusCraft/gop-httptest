@@ -1,5 +1,16 @@
-// Url "www.baidu.com"
+CaseName "testcase 1"
+Url "http://www.baidu.com"
 code := 200
-get "www.baidu.com"
-println code
+Match code,200
+Get
+Ret code
+
+CaseName "testcase 2"
+Get "http://www.baidu.com"
+Ret 200
+
+CaseName "testcase 3"
+Url "http://www.baidu.com"
+Body {"a": ["1"], "b": ["2"]}
+Post
 Ret code
