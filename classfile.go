@@ -1,6 +1,10 @@
 package httptest
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+	"strconv"
+)
 
 var (
 	GopPackage = true
@@ -16,6 +20,7 @@ type App struct {
 
 func (p *App) initApp() {
 	p.Test = &Test{}
+	// p.Test = new(Test)
 }
 
 func Gopt_App_Main(app Apper) {
@@ -23,34 +28,62 @@ func Gopt_App_Main(app Apper) {
 	app.(interface{ MainEntry() }).MainEntry()
 }
 
-func (p * App) Get(url string) {
+func (p * App) Get__0(url string) {
 	p.Test.Get(url)
 }
 
-// func (p *App) post(url string) {
-// 	p.Test.Post(url)
-// }
-
-// func (p * App) get__0() {
-// 	p.Test.Get(p.Test.url)
-// }
-
-// func (p *App) post__0() {
-// 	p.Test.Post(p.Test.url)
-// }
-
-func (p *App) Url(url string) {
-	p.Test.url = url
+func (p * App) Get__1() {
+	p.Test.Get(p.Test.gUrl)
 }
 
-func (p *App) ret(code int) {
+func (p *App) Post__0(url string, body map[string][]string) {
+	p.Test.Post(url, body)
+}
+
+func (p *App) Post__1() {
+	p.Test.Post(p.Test.gUrl, p.Test.body)
+}
+
+func (p *App) Post__2(url string) {
+	p.Test.Post(url, p.Test.body)
+}
+
+func (p *App) Url(url string) {
+	p.Test.gUrl = url
+}
+
+func (p *App) Body(body map[string][]string) {
+	p.Test.body = body
+}
+
+func (p *App) CaseName(caseName string) {
+	p.Test.caseName = caseName
+}
+
+func (p *App) Ret(code int) {
 	if(p.Test.result.StatusCode == code) {
-		fmt.Println("pass")
+		fmt.Println(p.Test.caseName + ": pass")
 	} else {
-		fmt.Println("fail")
+		fmt.Println(p.Test.caseName + ": fail")
 	}
 }
 
-func (p *App) Run(name string) {
-	fmt.Println(name)
+func (p *App) Match__0(src, tgt string) {
+	if(strings.Compare(src, tgt) == 0) {
+		fmt.Println(src + " " + tgt + ": matched")
+	} else {
+		fmt.Println(src + " " + tgt + ": not matched")
+	}
 }
+
+func (p *App) Match__1(src, tgt int) {
+	if(src == tgt) {
+		fmt.Println(strconv.Itoa(src) + " " + strconv.Itoa(tgt) + ": matched")
+	} else {
+		fmt.Println(strconv.Itoa(src) + " " + strconv.Itoa(tgt) + ": not matched")
+	}
+}
+
+// func (p *App) Run(name string) {
+// 	fmt.Println(name)
+// }
