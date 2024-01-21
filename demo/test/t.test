@@ -1,0 +1,9 @@
+Case "testcase 1"
+Echo "classfile: ",SubCmd("test subcmds")
+Get "http://www.baidu.com"
+Ret "200"
+Assert 1 < 2
+Match "$(a.b)", "100"
+Match "$(a.b)", "200"
+Echo "test classfile"
+Run "stage1"
