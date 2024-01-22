@@ -1,11 +1,5 @@
 package httptest
 
-import (
-	"fmt"
-	"strings"
-	"strconv"
-)
-
 var (
 	GopPackage = true
 )
@@ -16,11 +10,11 @@ type Apper interface {
 
 type App struct {
 	*Test
+	*Cmd
 }
 
 func (p *App) initApp() {
-	p.Test = &Test{}
-	// p.Test = new(Test)
+	p.Cmd = &Cmd{}
 }
 
 func Gopt_App_Main(app Apper) {
@@ -28,62 +22,68 @@ func Gopt_App_Main(app Apper) {
 	app.(interface{ MainEntry() }).MainEntry()
 }
 
-func (p * App) Get__0(url string) {
-	p.Test.Get(url)
-}
-
-func (p * App) Get__1() {
-	p.Test.Get(p.Test.gUrl)
-}
-
-func (p *App) Post__0(url string, body map[string][]string) {
-	p.Test.Post(url, body)
-}
-
-func (p *App) Post__1() {
-	p.Test.Post(p.Test.gUrl, p.Test.body)
-}
-
-func (p *App) Post__2(url string) {
-	p.Test.Post(url, p.Test.body)
-}
-
-func (p *App) Url(url string) {
-	p.Test.gUrl = url
-}
-
-func (p *App) Body(body map[string][]string) {
-	p.Test.body = body
-}
-
-func (p *App) CaseName(caseName string) {
-	p.Test.caseName = caseName
-}
-
-func (p *App) Ret(code int) {
-	if(p.Test.result.StatusCode == code) {
-		fmt.Println(p.Test.caseName + ": pass")
+func (p *App) Assert(data bool) {
+	p.addCode("assert")
+	if data {
+		p.addData("assert", "1")
 	} else {
-		fmt.Println(p.Test.caseName + ": fail")
+		p.addData("assert", "0")
 	}
 }
 
-func (p *App) Match__0(src, tgt string) {
-	if(strings.Compare(src, tgt) == 0) {
-		fmt.Println(src + " " + tgt + ": matched")
-	} else {
-		fmt.Println(src + " " + tgt + ": not matched")
-	}
+func (p *App) SubCmd(data string) string {
+	return data
 }
 
-func (p *App) Match__1(src, tgt int) {
-	if(src == tgt) {
-		fmt.Println(strconv.Itoa(src) + " " + strconv.Itoa(tgt) + ": matched")
-	} else {
-		fmt.Println(strconv.Itoa(src) + " " + strconv.Itoa(tgt) + ": not matched")
-	}
-}
-
-// func (p *App) Run(name string) {
-// 	fmt.Println(name)
+// func (p *App) GetVar(data string) {
+// return dyn.Get(p.vars, key)
 // }
+
+func (p *App) Case(data ...string) {
+	p.addCode("case")
+	p.addData("case", data...)
+}
+
+func (p *App) Auth(data ...string) {
+	p.addCode("auth")
+	p.addData("auth", data...)
+}
+
+func (p *App) Match(data ...string) {
+	p.addCode("match")
+	p.addData("match", data...)
+}
+
+func (p *App) Get(data ...string) {
+	p.addCode("get")
+	p.addData("get", data...)
+}
+
+func (p *App) Post(data ...string) {
+	p.addCode("post")
+	p.addData("post", data...)
+}
+
+func (p *App) Ret(data ...string) {
+	p.addCode("ret")
+	p.addData("ret", data...)
+}
+
+func (p *App) Echo(data ...string) {
+	p.addCode("echo")
+	p.addData("echo", data...)
+}
+
+func (p *App) Run(stage string) {
+	p.Cmd.Run(stage)
+	p.Cmd.Code = make([]string, 0)
+	p.Cmd.Data = make([][]string, 0)
+}
+
+func (p *App) addCode(code string) {
+	p.Cmd.Code = append(p.Cmd.Code, code)
+}
+
+func (p *App) addData(code string, data ...string) {
+	p.Cmd.Data = append(p.Cmd.Data, append([]string{code}, data...))
+}
